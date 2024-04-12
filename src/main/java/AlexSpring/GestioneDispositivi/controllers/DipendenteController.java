@@ -42,4 +42,15 @@ public class DipendenteController {
     public Dipendente findById(@PathVariable int dipendenteId){
         return this.dipendenteService.findById(dipendenteId); ////
     }
+
+    @PutMapping("/{dipendenteId}")
+    public NewDipendenteRespDTO update(@PathVariable int dipendenteId, @RequestBody NewDipendenteDTO body,BindingResult validation){
+        if (validation.hasErrors()){
+            throw new BadRequestException((validation.getAllErrors()));
+        }
+        else {
+
+            return new NewDipendenteRespDTO(this.dipendenteService.update(dipendenteId,body).getId());
+        }
+    }
 }

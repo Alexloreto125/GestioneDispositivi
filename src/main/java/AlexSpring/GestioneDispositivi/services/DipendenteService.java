@@ -5,6 +5,7 @@ import AlexSpring.GestioneDispositivi.exceptions.BadRequestException;
 import AlexSpring.GestioneDispositivi.exceptions.NotFoundException;
 import AlexSpring.GestioneDispositivi.payloads.NewDipendenteDTO;
 import AlexSpring.GestioneDispositivi.repositories.DipendenteDAO;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -44,5 +45,31 @@ public class DipendenteService {
         return this.dipendenteDAO.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
+
+    public Dipendente update(int id,NewDipendenteDTO dipendenteDTO)
+    {
+        Dipendente dipendeteAgg= dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+
+        if (!dipendenteDTO.email().equals(dipendeteAgg.getEmail()) && dipendenteDAO.findByEmail(dipendenteDTO.email()).isPresent()) {
+
+            throw new BadRequestException("L'email "+dipendenteDTO.email() + " è già in uso");
+        }
+
+        if (dipendenteDTO.username() != null) {
+            dipendeteAgg.setUsername(dipendenteDTO.username());
+        }
+        if (dipendenteDTO.name() != null) {
+            dipendeteAgg.setName(dipendenteDTO.name());
+        }
+        if (dipendenteDTO.surname() != null) {
+            dipendeteAgg.setSurname(dipendenteDTO.surname());
+        }
+        if (dipendenteDTO.email() != null) {
+            dipendeteAgg.setEmail(dipendenteDTO.email());
+        }
+
+        return dipendenteDAO.save(dipendeteAgg);
+
+    }
 
 }
