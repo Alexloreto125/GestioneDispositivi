@@ -22,15 +22,18 @@ public class Dipendente {
     private String name;
     private String surname;
     private String email;
+    private String avatarURL;
 
 
     @OneToMany(mappedBy = "dipendente")
     private List<Dispositivo> dispositiviAssegnati;
 
-    public Dipendente(String username, String name, String surname, String email) {
+    public Dipendente(String username, String name, String surname, String email,String avatarURL) {
         this.username= username;
         this.name= name;
         this.surname= surname;
         this.email= email;
+        this.avatarURL= avatarURL;
+
     }
 }

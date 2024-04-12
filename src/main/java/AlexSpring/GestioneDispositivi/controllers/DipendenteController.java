@@ -3,8 +3,10 @@ package AlexSpring.GestioneDispositivi.controllers;
 
 import AlexSpring.GestioneDispositivi.entities.Dipendente;
 import AlexSpring.GestioneDispositivi.exceptions.BadRequestException;
+import AlexSpring.GestioneDispositivi.exceptions.NotFoundException;
 import AlexSpring.GestioneDispositivi.payloads.NewDipendenteDTO;
 import AlexSpring.GestioneDispositivi.payloads.NewDipendenteRespDTO;
+import AlexSpring.GestioneDispositivi.repositories.DipendenteDAO;
 import AlexSpring.GestioneDispositivi.services.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,12 +14,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/dipendente")
 public class DipendenteController {
     @Autowired
     private DipendenteService dipendenteService;
+    @Autowired
+    private DipendenteDAO dipendenteDAO;
+
 
 
         //* RITORNO IL MAPPIG DI TUTTI I DIPENDENTI
@@ -56,13 +65,28 @@ public class DipendenteController {
             return new NewDipendenteRespDTO(this.dipendenteService.update(dipendenteId,body).getId());
         }
     }
+
+
     //* CANCELLO IL MAPPING DI DIPENDENTI CON ID
-
-
-
     @DeleteMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int dipendenteId){
         this.dipendenteService.findByIdAndDelete(dipendenteId);
+    }
+
+    @PostMapping("/{dipendenteId}/avatar")
+    public String uploadAvatar(@PathVariable int dipendenteId, @RequestParam("avatar") MultipartFile image) throws IOException {
+        Dipendente dipendente= dipendenteService.findById(dipendenteId);
+        if (dipendente==null){
+            throw new NotFoundException(dipendenteId);
+        }
+        String imageUrl= dipendenteService.uploadImage(dipendenteId,image);
+        dipendente.setAvatarURL(imageUrl);
+
+        dipendenteDAO.save(dipendente);
+
+        return imageUrl;
+
+
     }
 }
