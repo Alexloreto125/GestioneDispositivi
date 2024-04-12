@@ -28,7 +28,7 @@ public class Dispositivo {
     private StatoDispositivo stato;
 
     @Column(name = "dipendente_id")
-    private int dipendenteId;
+    private Integer dipendenteId;
 
 //    @ManyToOne
 //    @JoinColumn(insertable = false, updatable = false)

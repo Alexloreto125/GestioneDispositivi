@@ -65,4 +65,28 @@ public class DispositivoService {
     }
 
 
+    public void findByIdAndDelete(int id) {
+        Dispositivo found = this.findById(id);
+        this.dispositivoDAO.delete(found);
+    }
+
+
+    public Dispositivo update(int id,NewDispositivoDTO newDispositivoDTO){
+            Dispositivo dispositivo= dispositivoDAO.findById(id).orElseThrow(()-> new NotFoundException(id));
+
+            if (newDispositivoDTO.StatoDispositivo()!=null){
+                dispositivo.setStato(newDispositivoDTO.StatoDispositivo());
+            }
+
+            if (newDispositivoDTO.TipoDispositivo()!= null){
+                dispositivo.setTipo(newDispositivoDTO.TipoDispositivo());
+            }
+
+            if (newDispositivoDTO.StatoDispositivo()!= StatoDispositivo.ASSEGNATO){
+                dispositivo.setDipendenteId(null);
+            }
+            return dispositivoDAO.save(dispositivo);
+
+    }
+
 }
