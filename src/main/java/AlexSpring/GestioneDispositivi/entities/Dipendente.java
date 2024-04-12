@@ -16,7 +16,7 @@ public class Dipendente {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
-    private long id;
+    private int id;
 
     private String username;
     private String name;

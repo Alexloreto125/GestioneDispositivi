@@ -37,4 +37,9 @@ public class DipendenteController {
             return new NewDipendenteRespDTO(this.dipendenteService.save(body).getId());
         }
     }
+
+    @GetMapping("/{dipendenteId}")
+    public Dipendente findById(@PathVariable int dipendenteId){
+        return this.dipendenteService.findById(dipendenteId);
+    }
 }

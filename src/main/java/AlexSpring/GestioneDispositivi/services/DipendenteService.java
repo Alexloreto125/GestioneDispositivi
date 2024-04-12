@@ -2,6 +2,7 @@ package AlexSpring.GestioneDispositivi.services;
 
 import AlexSpring.GestioneDispositivi.entities.Dipendente;
 import AlexSpring.GestioneDispositivi.exceptions.BadRequestException;
+import AlexSpring.GestioneDispositivi.exceptions.NotFoundException;
 import AlexSpring.GestioneDispositivi.payloads.NewDipendenteDTO;
 import AlexSpring.GestioneDispositivi.repositories.DipendenteDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,10 @@ public class DipendenteService {
         Dipendente dipendente= new Dipendente(dipendenteDTO.username(),dipendenteDTO.name(),dipendenteDTO.surname(),dipendenteDTO.email());
 
       return   this.dipendenteDAO.save(dipendente);
+    }
+
+    public Dipendente findById(int id){
+        return this.dipendenteDAO.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
 
 
