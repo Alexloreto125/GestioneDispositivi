@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 public class DispositiviHandler {
 
 
-//    @ExceptionHandler(BadRequestException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorsPayload handleBadRequest(BadRequestException ex){
-//        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
-//    }
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsPayload handleBadRequest(BadRequestException ex){
+        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    }
 //
 //    @ExceptionHandler(NotFoundException.class)
 //    @ResponseStatus(HttpStatus.NOT_FOUND)

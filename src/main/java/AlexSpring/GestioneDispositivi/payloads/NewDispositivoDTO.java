@@ -19,7 +19,7 @@ public record NewDispositivoDTO (
 
         StatoDispositivo StatoDispositivo,
 
-        int dipendenteId
+        Integer dipendenteId
 
 ){
 
