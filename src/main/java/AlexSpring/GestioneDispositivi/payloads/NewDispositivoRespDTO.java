@@ -1,4 +1,4 @@
 package AlexSpring.GestioneDispositivi.payloads;
 
-public record NewDipendenteRespDTO(int id) {
+public record NewDispositivoRespDTO (int id){
 }

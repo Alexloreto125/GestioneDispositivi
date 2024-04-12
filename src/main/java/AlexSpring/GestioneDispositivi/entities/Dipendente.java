@@ -1,5 +1,7 @@
 package AlexSpring.GestioneDispositivi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,9 +26,6 @@ public class Dipendente {
     private String email;
     private String avatarURL;
 
-
-    @OneToMany(mappedBy = "dipendente")
-    private List<Dispositivo> dispositiviAssegnati;
 
     public Dipendente(String username, String name, String surname, String email,String avatarURL) {
         this.username= username;

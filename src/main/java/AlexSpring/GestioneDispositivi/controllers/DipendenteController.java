@@ -42,6 +42,7 @@ public class DipendenteController {
     @ResponseStatus(HttpStatus.CREATED)
     public NewDipendenteRespDTO saveDipendente(@RequestBody @Validated NewDipendenteDTO body, BindingResult validation){
         if(validation.hasErrors()){
+            System.out.println("ERRORI BODY "+ body);
             throw new BadRequestException(validation.getAllErrors());
         }
         else {

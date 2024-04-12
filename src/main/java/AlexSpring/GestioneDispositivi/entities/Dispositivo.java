@@ -2,6 +2,9 @@ package AlexSpring.GestioneDispositivi.entities;
 
 import AlexSpring.GestioneDispositivi.enums.StatoDispositivo;
 import AlexSpring.GestioneDispositivi.enums.TipoDispositivo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +18,7 @@ public class Dispositivo {
     @Id
     @GeneratedValue
     @Setter(AccessLevel.NONE)
-    private long id;
+    private int id;
 
     @Enumerated(EnumType.STRING)
     private TipoDispositivo tipo;
@@ -24,8 +27,24 @@ public class Dispositivo {
     @Enumerated(EnumType.STRING)
     private StatoDispositivo stato;
 
-    @ManyToOne
-    @JoinColumn(name = "dipendente_id")
-    private Dipendente dipendente;
+    @Column(name = "dipendente_id")
+    private int dipendenteId;
+
+//    @ManyToOne
+//    @JoinColumn(insertable = false, updatable = false)
+//    private Dipendente dipendente;
+
+
+
+
+//    public Dispositivo(TipoDispositivo tipoDispositivo, StatoDispositivo statoDispositivo) {
+//        this.tipo= tipoDispositivo;
+//        this.stato=statoDispositivo;
+//    }
+    public Dispositivo(TipoDispositivo tipoDispositivo, StatoDispositivo statoDispositivo, int dipendenteId) {
+        this.tipo= tipoDispositivo;
+        this.stato=statoDispositivo;
+        this.dipendenteId= dipendenteId;
+    }
 
 }
