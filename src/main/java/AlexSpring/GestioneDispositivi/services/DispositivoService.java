@@ -103,7 +103,10 @@ public class DispositivoService {
 
         if (newDispositivoDTO.StatoDispositivo() != StatoDispositivo.ASSEGNATO) {
             dispositivo.setDipendenteId(null);
+        } else if (newDispositivoDTO.StatoDispositivo()==StatoDispositivo.ASSEGNATO) {
+            dispositivo.setDipendenteId(newDispositivoDTO.dipendenteId());
         }
+
         return dispositivoDAO.save(dispositivo);
 
     }
