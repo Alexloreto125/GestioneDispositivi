@@ -5,7 +5,6 @@ import AlexSpring.GestioneDispositivi.exceptions.BadRequestException;
 import AlexSpring.GestioneDispositivi.exceptions.NotFoundException;
 import AlexSpring.GestioneDispositivi.payloads.NewDipendenteDTO;
 import AlexSpring.GestioneDispositivi.repositories.DipendenteDAO;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,40 +18,39 @@ public class DipendenteService {
     private DipendenteDAO dipendenteDAO;
 
 
-        //* RITORNO TUTTI I DIPENDENTI CON PAGINAZIONE
-    public Page<Dipendente> getAllDipendenti(int page, int size,String sortBy){
-        if (size>100) size= 100;
+    //* RITORNO TUTTI I DIPENDENTI CON PAGINAZIONE
+    public Page<Dipendente> getAllDipendenti(int page, int size, String sortBy) {
+        if (size > 100) size = 100;
 
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         return this.dipendenteDAO.findAll(pageable);
 
     }
 
-       //* SALVO I DIPENDENTI
+    //* SALVO I DIPENDENTI
 
-    public Dipendente save(NewDipendenteDTO dipendenteDTO){
+    public Dipendente save(NewDipendenteDTO dipendenteDTO) {
         this.dipendenteDAO.findByEmail(dipendenteDTO.email()).ifPresent(dipendente -> {
-            throw new BadRequestException("L'email "+ dipendente.getEmail()+ " è già in uso");
+            throw new BadRequestException("L'email " + dipendente.getEmail() + " è già in uso");
         });
 
-        Dipendente dipendente= new Dipendente(dipendenteDTO.username(),dipendenteDTO.name(),dipendenteDTO.surname(),dipendenteDTO.email());
+        Dipendente dipendente = new Dipendente(dipendenteDTO.username(), dipendenteDTO.name(), dipendenteDTO.surname(), dipendenteDTO.email());
 
-      return   this.dipendenteDAO.save(dipendente);
+        return this.dipendenteDAO.save(dipendente);
     }
 
-    public Dipendente findById(int id){
-        return this.dipendenteDAO.findById(id).orElseThrow(()-> new NotFoundException(id));
+    public Dipendente findById(int id) {
+        return this.dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
 
-    public Dipendente update(int id,NewDipendenteDTO dipendenteDTO)
-    {
-        Dipendente dipendeteAgg= dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
+    public Dipendente update(int id, NewDipendenteDTO dipendenteDTO) {
+        Dipendente dipendeteAgg = dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
 
         if (!dipendenteDTO.email().equals(dipendeteAgg.getEmail()) && dipendenteDAO.findByEmail(dipendenteDTO.email()).isPresent()) {
 
-            throw new BadRequestException("L'email "+dipendenteDTO.email() + " è già in uso");
+            throw new BadRequestException("L'email " + dipendenteDTO.email() + " è già in uso");
         }
 
         if (dipendenteDTO.username() != null) {
@@ -72,4 +70,10 @@ public class DipendenteService {
 
     }
 
+
+    public void findByIdAndDelete(int id) {
+        Dipendente found = this.findById(id);
+
+        this.dipendenteDAO.delete(found);
+    }
 }
