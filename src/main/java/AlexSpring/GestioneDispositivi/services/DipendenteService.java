@@ -98,5 +98,9 @@ public class DipendenteService {
 
     }
 
+    public Dipendente findByEmail(String email){
+        return dipendenteDAO.findByEmail(email).orElseThrow(()->new NotFoundException("Utente con email "+ email+ " non trovato"));
+
+    }
 
 }
